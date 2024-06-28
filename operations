@@ -1,0 +1,52 @@
+#Intersection       
+def Intersection(query):
+    query = query.split()
+    term1 = query[0]
+    term2 = query[2]
+    a = Index[term1]
+    b = Index[term2]
+    common = []
+    while(a != None and b != None):
+        if(a.docId == b.docId):
+            common.append(a.docId)
+            a = a.next
+            b = b.next
+        elif a.docId < b.docId:
+            a = a.next
+        else:
+            b = b.next
+    return common
+#Union   
+def union(query):
+    query = query.split()
+    term1 = query[0]
+    term2 = query[2]
+    a = Index[term1]
+    b = Index[term2]
+    union = []
+    while(a != None):
+        union.append(a.docId)
+        a = a.next
+    while(b != None):
+        if b.docId not in union:
+            union.append(b.docId)
+        b = b.next
+    union.sort()
+    return union
+#Minus
+def minus(query):
+    query = query.split()
+    term1 = query[0]
+    term2 = query[2]
+    a = Index[term1]
+    b = Index[term2]
+    temp = []
+    res = []
+    while(b != None):
+        temp.append(b.docId)
+        b = b.next
+    while(a != None):
+        if(a.docId not in temp):
+            res.append(a.docId)
+        a = a.next
+    return res
